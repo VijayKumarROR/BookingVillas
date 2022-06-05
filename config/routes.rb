@@ -1,6 +1,14 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  
+  namespace :api do
+    namespace :v1 do
+      resources :villas, only: :index do 
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+        get 'search_villas', on: :collection
+        get 'available_villas', on: :collection
+        
+      end
+    end
+  end
+
 end
