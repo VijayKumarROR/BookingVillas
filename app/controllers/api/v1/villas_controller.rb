@@ -1,12 +1,12 @@
 class Api::V1::VillasController < ApplicationController
-	before_action :check_date, except: :index
+	before_action :check_date, except: [:index, :available_villas]
 
 	def index
 		render json: {villas: Villa.send("#{params[:availability].eql?('true') ? 'availabilities' : params[:availability].eql?('false') ? 'non_availabilities' : 'all' }").order("price #{params[:sort_by] || 'desc'}")}
 	end
 
 	def available_villas
-		render json: {names: Villa.availabilities.pluck(:name)}
+		render json: {names: Villa.availabilities}
 	end
 
 	def search_villas
