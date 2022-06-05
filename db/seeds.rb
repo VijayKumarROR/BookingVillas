@@ -1,7 +1,34 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+Villa.destroy_all
+
+location = ["Chennai", "Bangalore", "Hydrabad", "Mumbai", "Ooty", "Kodaikanal"]
+available = [true, false]
+default_cin = DateTime.now.beginning_of_year
+default_cout = DateTime.now.end_of_year
+default_days = [4,5,6,7]
+price = 7499
+
+50.times do |no|
+	check_in = Time.at((default_cout.to_f - default_cin.to_f)*rand + default_cin.to_f)
+	
+	year = check_in.strftime('%Y')
+	month = check_in.strftime('%m')
+	date = check_in.strftime('%d')
+	
+	check_out = DateTime.new(year.to_i, month.to_i, date.to_i, 11)+(default_days.sample).days
+	
+	amt_to_stay = (price * (check_out.to_date - check_in.to_date).to_i)
+	include_gst = (amt_to_stay * 18/100)
+ 
+	Villa.create({
+		name: Faker::Name.name,
+		price: price,
+		location: location.sample,
+		address: Faker::Address.street_address,
+		is_available: available.sample,
+		check_in: check_in,
+		check_out: check_out,
+		adults_count: default_days.sample,
+		total_amount: amt_to_stay+include_gst
+	})
+	p "#{no} executed!!!"
+end
